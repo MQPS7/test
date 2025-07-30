@@ -747,6 +747,12 @@ local Nofog_Button = Create_Toggle(ModePlayer_SelectFuntion, "ปิดหมอ
 local Nofog = false;Nofog_Button.Activated:Connect(function()
 	if Nofog == false then
 		Nofog = true
+		for _, item in ipairs(Map.Boundaries:GetChildren()) do
+			if item:IsA("BasePart") and item.Name == "Part" then
+				item:Destroy()
+			end
+			wait()
+		end
 	else
 		Nofog = false
 		Lighting.FogEnd = 300
@@ -1354,21 +1360,20 @@ local NoLeaf = false;NoLeaf_Button.Activated:Connect(function()
 	end	
 end)
 task.spawn(function()
+	local function SoftDestroyLeaf(Model)
+		if Model then
+			for _, item in ipairs(Model:GetChildren()) do
+				if item:IsA("BasePart") and item.Material == Enum.Material.Grass then
+					item:Destroy()
+				end						
+			end
+		end
+	end
 	while wait(6) do
 		if NoLeaf == true then
 			for _, item in ipairs(Foliage:GetChildren()) do
-				local function SoftDestroyLeaf(Model)
-					if Model then
-						for _, item in ipairs(Model:GetChildren()) do
-							if item:IsA("BasePart") and item.Material == Enum.Material.Grass then
-								item:Destroy()
-							end						
-						end
-					end
-				end
 				pcall(function()
 					if NoLeaf == true then
-						--StoneSmall --StoneTall--Grass1 Grass2--TreeBig1
 						if item.Name == "Bush" then
 							item:Destroy()
 						elseif item.Name == "StoneTall" or item.Name == "StoneSmall" then
@@ -1382,6 +1387,17 @@ task.spawn(function()
 						end
 					end
 				end)
+				wait()
+			end
+			for _, item in ipairs(Landmarks:GetChildren()) do
+				pcall(function()
+					if NoLeaf == true then
+						if item.Name == "Small Tree" then
+							SoftDestroyLeaf(item)
+						end
+					end
+				end)
+				wait()
 			end	
 		end	
 	end
