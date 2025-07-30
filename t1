@@ -371,6 +371,8 @@ ModeDrag, ModeDrag_SelectFuntion = Create_ModeButton(" ดึงของ / ย�
 
 ModeAuto, ModeAuto_SelectFuntion = Create_ModeButton(" อัตโนมัติ ⚡ ")
 
+ModeMore, ModeMore_SelectFuntion = Create_ModeButton(" เพิ่มเติม ☰ ")
+
 ---- End!!
 local function Create_Line(Parent, Name)
 	local MainButton1 = MakeFrame(ScreenGui, UDim2.new(0, 248,0, 24), UDim2.new(0, 0,0, 0), 1, Color3.new(0.141176, 0.12549, 0.368627), true, true)
@@ -792,7 +794,17 @@ local AutoCook = false;AutoCook_Button.Activated:Connect(function()
 		DontEquipTool = false
 	end	
 end)
+local FastProxLootBox_Button = Create_Toggle(ModeFarm_SelectFuntion, "เปิดกล่องไว")
+local FastProxLootBox = false;FastProxLootBox_Button.Activated:Connect(function()
+	if FastProxLootBox == false then
+		FastProxLootBox = true
+	else
+		FastProxLootBox = false
+	end	
+end)
+
 local ModeDragLine_2 = Create_Line(ModeFarm_SelectFuntion, "ต่อสู้ 🗡️")
+
 local KillAura_Button = Create_Toggle(ModeFarm_SelectFuntion, "คิลออร่า")
 local KillAura = false;KillAura_Button.Activated:Connect(function()
 	if KillAura == false then
@@ -836,14 +848,6 @@ local function SetSlider5(Bar, Slide, Defalse_Value, Color)
 end
 SetSlider5(Kill_Aura_SlideBar, Kill_Aura_Bar, Kill_Aura_Dis, Kill_Aura_Color)
 
-local FastProxLootBox_Button = Create_Toggle(ModeFarm_SelectFuntion, "เปิดกล่องไว")
-local FastProxLootBox = false;FastProxLootBox_Button.Activated:Connect(function()
-	if FastProxLootBox == false then
-		FastProxLootBox = true
-	else
-		FastProxLootBox = false
-	end	
-end)
 ---------------- **** ModeDrag_SelectFuntion **** ----------------
 
 local Target = "Character"
@@ -1192,7 +1196,7 @@ end)
 
 ---------------- **** ModeAuto_SelectFuntion **** ----------------
 
-local ModeAutoLine_1 = Create_Line(ModeAuto_SelectFuntion, "สถานะ 📝")
+ModeAutoLine_1 = Create_Line(ModeAuto_SelectFuntion, "สถานะ 📝")
 local AutoFillHunger = false
 local Custom_Food = false
 local Auto_Food_Teble = {"Apple", "Carrot", "Cake", "Berry", "Cooked Morsel", "Cooked Steak"}
@@ -1218,7 +1222,7 @@ AutoFillHunger_Button.Activated:Connect(function()
 		AutoFillHunger = false
 	end	
 end)
-local ModeAutoLine_1 = Create_Line(ModeAuto_SelectFuntion, "ออโต้หา 🔎")
+ModeAutoLine_1 = Create_Line(ModeAuto_SelectFuntion, "ออโต้หา 🔎")
 local AutoGetKid_Button = Create_Toggle(ModeAuto_SelectFuntion, "ออโต้หาเด็ก")
 local AutoGetKid = false;AutoGetKid_Button.Activated:Connect(function()
 	if AutoGetKid == false then
@@ -1274,6 +1278,18 @@ RunService.RenderStepped:Connect(function(dt)
 		end
 	end
 end)
+---------------- **** ModeMore_SelectFuntion **** ----------------
+ModeMoreLine_1 = Create_Line(ModeMore_SelectFuntion, "การมองเห็น 👁️")
+
+EspChest_Button = Create_Toggle(ModeMore_SelectFuntion, "มองทะลุหีบ")
+local EspChest = false;EspChest_Button.Activated:Connect(function()
+	if EspChest == false then
+		EspChest = true
+	else
+		EspChest = false
+	end	
+end)
+
 ------******* End *******-------
 Close_Panal.Activated:Connect(function()
 	local ByeSound = Instance.new("Sound", game.SoundService)
