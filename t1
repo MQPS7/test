@@ -20,6 +20,7 @@ RequestStartDraggingItem = RemoteEvents:FindFirstChild("RequestStartDraggingItem
 StopDraggingItem = RemoteEvents:FindFirstChild("StopDraggingItem");UnequipItemHandle = RemoteEvents:WaitForChild("UnequipItemHandle")
 EquipItemHandle = RemoteEvents:FindFirstChild("EquipItemHandle");ToolDamageObject = RemoteEvents:WaitForChild("ToolDamageObject")
 RequestHotbarItem = RemoteEvents:FindFirstChild("RequestHotbarItem");RequestConsumeItem = RemoteEvents:FindFirstChild("RequestConsumeItem")
+Foliage = Map:WaitForChild("Foliage")
 PlayerAxe = nil ;Auto_FOOD = false ;DontEquipTool = false
 local function EquipAxe()
 	local AxeFound = nil
@@ -371,7 +372,7 @@ ModeDrag, ModeDrag_SelectFuntion = Create_ModeButton(" ดึงของ / ย�
 
 ModeAuto, ModeAuto_SelectFuntion = Create_ModeButton(" อัตโนมัติ ⚡ ")
 
-ModeMore, ModeMore_SelectFuntion = Create_ModeButton(" เพิ่มเติม ☰ ")
+ModeMore, ModeMore_SelectFuntion = Create_ModeButton(" เพิ่มเติม ➕ ")
 
 ---- End!!
 local function Create_Line(Parent, Name)
@@ -931,7 +932,7 @@ local function BringItemWithItem2(item2)
 		elseif Target == "NearCamp" then
 			RequestStartDraggingItem:FireServer(item2)
 			wait(0.03)
-			item2.PrimaryPart.CFrame = InnerTouchZone.CFrame * CFrame.new(-15,0,0)
+			item2.PrimaryPart.CFrame = InnerTouchZone.CFrame * CFrame.new(-20,2,0)
 		elseif Target == "Fire" then
 			RequestStartDraggingItem:FireServer(item2)
 			wait(0.03)
@@ -1301,7 +1302,7 @@ local EspChest = false;EspChest_Button.Activated:Connect(function()
 	end	
 end)
 task.spawn(function()
-	while wait(5) do
+	while wait(6) do
 		if EspChest == true then
 			for _, item2 in ipairs(Items:GetChildren()) do
 				if item2 and matchesAllowedKeyword(item2.Name, {"Chest"}) and item2:IsA("Model") then
@@ -1314,13 +1315,15 @@ task.spawn(function()
 						NewHi.OutlineTransparency = 1
 						NewHi.FillColor = Color3.new(0.407843, 0.352941, 1)
 						NewText.BackgroundTransparency = 1
-						--NewText.TextScaled = true
 						NewText.TextColor3 = Color3.new(0.415686, 0.184314, 1)
 						NewText.Text = "Chest"
 						NewBil.Size = UDim2.new(0, 200,0, 50)
 						NewBil.SizeOffset = Vector2.new(0, 0.5)
 						NewBil.AlwaysOnTop = true
 						NewText.Size = UDim2.new(0, 200,0, 50)
+						NewText.TextYAlignment = Enum.TextYAlignment.Top
+						NewText.TextSize = 26
+						NewText.Font = Enum.Font.Highway
 						pcall(function()
 							repeat
 								wait(0.01)
@@ -1340,7 +1343,49 @@ task.spawn(function()
 	end
 end)
 
+ModeMoreLine_2 = Create_Line(ModeMore_SelectFuntion, "ช่วยลดความแล็ค 🏞️")
 
+NoLeaf_Button = Create_Toggle(ModeMore_SelectFuntion, "ปิดใบไม้ 🍃")
+local NoLeaf = false;NoLeaf_Button.Activated:Connect(function()
+	if NoLeaf == false then
+		NoLeaf = true
+	else
+		NoLeaf = false
+	end	
+end)
+task.spawn(function()
+	while wait(6) do
+		if NoLeaf == true then
+			for _, item in ipairs(Foliage:GetChildren()) do
+				local function SoftDestroyLeaf(Model)
+					if Model then
+						for _, item in ipairs(Model:GetChildren()) do
+							if item:IsA("BasePart") and item.Material == Enum.Material.Grass then
+								item:Destroy()
+							end						
+						end
+					end
+				end
+				pcall(function()
+					if NoLeaf == true then
+						--StoneSmall --StoneTall--Grass1 Grass2--TreeBig1
+						if item.Name == "Bush" then
+							item:Destroy()
+						elseif item.Name == "StoneTall" or item.Name == "StoneSmall" then
+							item:Destroy()
+						elseif item.Name == "Grass1" or item.Name == "Grass2" then
+							item:Destroy()
+						elseif item.Name == "Small Tree" then
+							SoftDestroyLeaf(item)
+						elseif item.Name == "TreeBig1" or item.Name == "TreeBig2" or item.Name == "TreeBig3" then
+							SoftDestroyLeaf(item)
+						end
+					end
+				end)
+			end	
+		end	
+	end
+end)
 
 
 ------******* End *******-------
@@ -1362,7 +1407,6 @@ Close_Panal.Activated:Connect(function()
 end)
 ------- ***** Start Script Loop ***** ----------------
 task.spawn(function()
-	local Foliage = Map:WaitForChild("Foliage")
 	while wait(1) do
 		if AutoCutTree == true and Foliage then
 			if not character:FindFirstChild("ToolHandle") then
