@@ -1279,13 +1279,30 @@ local AutoPickGoldCoin = false;AutoPickGoldCoin_Button.Activated:Connect(functio
 		AutoPickGoldCoin = false
 	end
 end)
+AutoPickFlower_Button = Create_Toggle(ModeFarm_SelectFuntion, "ออโต้เก็บดอกไม้ 💐 ")
+local AutoPickFlower = false;AutoPickFlower_Button.Activated:Connect(function()
+	if AutoPickFlower == false then
+		AutoPickFlower = true
+	else
+		AutoPickFlower = false
+	end
+end)
 task.spawn(function()
 	local RequestCollectCoints = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):FindFirstChild("RequestCollectCoints")
+	local RequestPickFlower = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):FindFirstChild("RequestPickFlower")
 	while wait(5) do
 		if AutoPickGoldCoin == true then
 			for _, item2 in ipairs(Items:GetChildren()) do
 				if item2.Name == "Coin Stack" then
 					RequestCollectCoints:InvokeServer(item2)
+				end
+				wait()
+			end
+		end
+		if AutoPickFlower == true then
+			for _, item3 in ipairs(Landmarks:GetChildren()) do
+				if item3.Name == "Flower" then
+					RequestPickFlower:InvokeServer(item3)
 				end
 				wait()
 			end
@@ -1392,6 +1409,7 @@ task.spawn(function()
 			for _, item in ipairs(Map.Ground:GetChildren()) do
 				if item:IsA("BasePart") and item.Material == Enum.Material.Grass then
 					item.Material = Enum.Material.SmoothPlastic
+					item.CastShadow = false
 				end	
 				wait()
 			end
