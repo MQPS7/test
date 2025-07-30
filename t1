@@ -249,7 +249,7 @@ gradient_IconLoad = Instance.new("UIGradient", LoadingIcon); gradient_IconLoad.R
 LoadingFrame.ZIndex = 2;LoadingBar1.ZIndex = 3;LoadingBar2.ZIndex = 4;LoadingText.ZIndex = 3;LoadingIcon.ZIndex = 3; gradient_IconLoad.Offset = Vector2.new(0, -1.5)
 IconFrame = MakeImageLabel(MainFrame, UDim2.new(0, 32,0, 31), UDim2.new(0.017, 0,0.013, 0), 1, Color3.new(0.435294, 0.109804, 1), 0, "rbxassetid://80019916158199")
 TitleText = MakeText(MainFrame, UDim2.new(0, 112,0, 32), UDim2.new(0.118, 0,0.013, 0), 1, Color3.new(0.466667, 0.286275, 1), true, "Somtank")
-VersionText = MakeText(MainFrame, UDim2.new(0, 163,0, 20), UDim2.new(0.41, 0,0.054, 0), 1, Color3.new(0.466667, 0.286275, 1), true, "V0.0.7")
+VersionText = MakeText(MainFrame, UDim2.new(0, 163,0, 20), UDim2.new(0.41, 0,0.054, 0), 1, Color3.new(0.466667, 0.286275, 1), true, "V0.0.7c")
 FOR_ICON = Instance.new("UIAspectRatioConstraint", IconFrame)
 TitleText.TextXAlignment = Enum.TextXAlignment.Left
 VersionText.TextXAlignment = Enum.TextXAlignment.Left
@@ -770,7 +770,7 @@ local Brightness = false;Brightness_Button.Activated:Connect(function()
 end)
 ---------------- **** ModeFarm_SelectFuntion **** ----------------
 local ModeDragLine_1 = Create_Line(ModeFarm_SelectFuntion, "ฟาร์ม 🌾")
-local AutoCutTree_Button = Create_Toggle(ModeFarm_SelectFuntion, "ออโต้ตัดไม้")
+AutoCutTree_Button = Create_Toggle(ModeFarm_SelectFuntion, "ออโต้ตัดไม้")
 local AutoCutTree = false;AutoCutTree_Button.Activated:Connect(function()
 	if AutoCutTree == false then
 		humanoid.HipHeight = 60
@@ -781,11 +781,10 @@ local AutoCutTree = false;AutoCutTree_Button.Activated:Connect(function()
 		AutoCutTree = false
 		DontEquipTool = false
 		HMNRT.CFrame = InnerTouchZone.CFrame * CFrame.new(0,7,0)
-		--UnEquip()
 	end
 end)
 local KillAura = false ; local OnTopEnameis = false
-local AutoCook_Button = Create_Toggle(ModeFarm_SelectFuntion, "ออโต้ทำอาหาร")
+AutoCook_Button = Create_Toggle(ModeFarm_SelectFuntion, "ออโต้ทำอาหาร")
 local AutoCook = false;AutoCook_Button.Activated:Connect(function()
 	if AutoCook == false then
 		AutoCook = true
@@ -799,14 +798,6 @@ local AutoCook = false;AutoCook_Button.Activated:Connect(function()
 		KillAura = false
 		OnTopEnameis = false
 		DontEquipTool = false
-	end	
-end)
-local FastProxLootBox_Button = Create_Toggle(ModeFarm_SelectFuntion, "เปิดกล่องไว")
-local FastProxLootBox = false;FastProxLootBox_Button.Activated:Connect(function()
-	if FastProxLootBox == false then
-		FastProxLootBox = true
-	else
-		FastProxLootBox = false
 	end	
 end)
 
@@ -1285,7 +1276,40 @@ RunService.RenderStepped:Connect(function(dt)
 		end
 	end
 end)
+
+AutoPickGoldCoin_Button = Create_Toggle(ModeFarm_SelectFuntion, "ออโต้เก็บเหรียญทอง 💰 ")
+local AutoPickGoldCoin = false;AutoPickGoldCoin_Button.Activated:Connect(function()
+	if AutoPickGoldCoin == false then
+		AutoPickGoldCoin = true
+	else
+		AutoPickGoldCoin = false
+	end
+end)
+task.spawn(function()
+	local RequestCollectCoints = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):FindFirstChild("RequestCollectCoints")
+	while wait(5) do
+		if AutoPickGoldCoin == true then
+			for _, item2 in ipairs(Items:GetChildren()) do
+				if item2.Name == "Coin Stack" then
+					RequestCollectCoints:InvokeServer(item2)
+				end
+				wait()
+			end
+		end
+	end
+end)
+
 ---------------- **** ModeMore_SelectFuntion **** ----------------
+
+local FastProxLootBox_Button = Create_Toggle(ModeMore_SelectFuntion, "เปิดกล่องไว")
+local FastProxLootBox = false;FastProxLootBox_Button.Activated:Connect(function()
+	if FastProxLootBox == false then
+		FastProxLootBox = true
+	else
+		FastProxLootBox = false
+	end	
+end)
+
 ModeMoreLine_1 = Create_Line(ModeMore_SelectFuntion, "การมองเห็น 👁️")
 
 EspChest_Button = Create_Toggle(ModeMore_SelectFuntion, "มองทะลุหีบ")
@@ -1351,7 +1375,7 @@ end)
 
 ModeMoreLine_2 = Create_Line(ModeMore_SelectFuntion, "ช่วยลดความแล็ค 🏞️")
 
-NoLeaf_Button = Create_Toggle(ModeMore_SelectFuntion, "ปิดใบไม้ 🍃")
+NoLeaf_Button = Create_Toggle(ModeMore_SelectFuntion, "ลบสิ่งไม่ไม่จำเป็น 🍃")
 local NoLeaf = false;NoLeaf_Button.Activated:Connect(function()
 	if NoLeaf == false then
 		NoLeaf = true
@@ -1369,8 +1393,14 @@ task.spawn(function()
 			end
 		end
 	end
-	while wait(6) do
+	while wait(10) do
 		if NoLeaf == true then
+			for _, item in ipairs(Map.Ground:GetChildren()) do
+				if item:IsA("BasePart") and item.Material == Enum.Material.Grass then
+					item.Material = Enum.Material.SmoothPlastic
+				end	
+				wait()
+			end
 			for _, item in ipairs(Foliage:GetChildren()) do
 				pcall(function()
 					if NoLeaf == true then
