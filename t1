@@ -1289,6 +1289,33 @@ local EspChest = false;EspChest_Button.Activated:Connect(function()
 		EspChest = false
 	end	
 end)
+task.spawn(function()
+	while wait(5) do
+		if EspChest == true then
+			for _, item2 in ipairs(Items:GetChildren()) do
+				if item2 and matchesAllowedKeyword(item2.Name, {"Chest"}) and item2:IsA("Model") then
+					if not item2:FindFirstChild("SOmtankChestESP") then
+						local NewHi = Instance.new("Highlight", item2)
+						local NewBil = Instance.new("BillboardGui", item2)
+						local NewText = Instance.new("TextLabel", NewBil)
+						NewHi.Name = "SOmtankChestESP"
+						NewBil.Name = "SOmtankChestBil"
+						NewHi.OutlineTransparency = 1
+						NewHi.FillColor = Color3.new(0.407843, 0.352941, 1)
+						NewText.BackgroundTransparency = 1
+						NewText.TextScaled = true
+						NewText.TextColor3 = Color3.new(0.415686, 0.184314, 1)
+						NewText.Text = item2.Name
+					end
+				end
+				wait()
+			end
+		end	
+	end
+end)
+
+
+
 
 ------******* End *******-------
 Close_Panal.Activated:Connect(function()
@@ -1451,7 +1478,7 @@ task.spawn(function()
 	end
 end)
 task.spawn(function()
-	while wait(1) do
+	while wait(3) do
 		if FastProxLootBox == true then
 			for _, item2 in ipairs(Items:GetChildren()) do
 				if item2 and matchesAllowedKeyword(item2.Name, {"Chest"}) and item2.PrimaryPart then
