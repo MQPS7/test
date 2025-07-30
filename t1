@@ -747,12 +747,6 @@ local Nofog_Button = Create_Toggle(ModePlayer_SelectFuntion, "ปิดหมอ
 local Nofog = false;Nofog_Button.Activated:Connect(function()
 	if Nofog == false then
 		Nofog = true
-		for _, item in ipairs(Map.Boundaries:GetChildren()) do
-			if item:IsA("BasePart") and item.Name == "Part" then
-				item:Destroy()
-			end
-			wait()
-		end
 	else
 		Nofog = false
 		Lighting.FogEnd = 300
@@ -1533,10 +1527,16 @@ task.spawn(function()
 	end
 end)
 task.spawn(function()
-	while wait(0.5) do
+	while wait(3) do
 		if Nofog == true then
 			Lighting.FogEnd = 5000
 			Lighting.FogStart = 5000
+			for _, item in ipairs(Map.Boundaries:GetChildren()) do
+				if item:IsA("BasePart") and item.Name == "Part" then
+					item:Destroy()
+				end
+				wait()
+			end
 		end
 		if Brightness == true then
 			Lighting.Brightness = 10
