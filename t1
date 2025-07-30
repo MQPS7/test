@@ -1287,6 +1287,17 @@ local EspChest = false;EspChest_Button.Activated:Connect(function()
 		EspChest = true
 	else
 		EspChest = false
+		for _, item2 in ipairs(Items:GetChildren()) do
+			if item2 and matchesAllowedKeyword(item2.Name, {"Chest"}) and item2:IsA("Model") then
+				if item2:FindFirstChild("SOmtankChestESP") then
+					item2:FindFirstChild("SOmtankChestESP"):Destroy()
+				end
+				if item2:FindFirstChild("SOmtankChestBil") then
+					item2:FindFirstChild("SOmtankChestBil"):Destroy()
+				end
+			end
+			wait()
+		end
 	end	
 end)
 task.spawn(function()
@@ -1306,6 +1317,9 @@ task.spawn(function()
 						NewText.TextScaled = true
 						NewText.TextColor3 = Color3.new(0.415686, 0.184314, 1)
 						NewText.Text = item2.Name
+						NewBil.Size = UDim2.new({0, 200},{0, 50})
+						NewBil.SizeOffset = Vector2.new(0, 0.5)
+						NewText.Size = UDim2.new({0, 200},{0, 50})
 					end
 				end
 				wait()
