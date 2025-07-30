@@ -803,8 +803,8 @@ local KillAura = false;KillAura_Button.Activated:Connect(function()
 	end	
 end)
 
-local Kill_Aura_Dis = 200 ; local Max_Kill_Aura_Dis = 200
-local Kill_Aura_SlideBar, Kill_Aura_Bar, Kill_Aura_TextBox, Kill_Aura_ShowValue, Kill_Aura_Color, Kill_Aura_ResetButton = Create_Slide_Textbox(ModeDrag_SelectFuntion, "ระยะการคิลออร่า", "ใส่ค่าที่ต้องการเลยครับ", Kill_Aura_Dis)
+local Kill_Aura_Dis = 100 ; local Max_Kill_Aura_Dis = 200
+local Kill_Aura_SlideBar, Kill_Aura_Bar, Kill_Aura_TextBox, Kill_Aura_ShowValue, Kill_Aura_Color, Kill_Aura_ResetButton = Create_Slide_Textbox(ModeFarm_SelectFuntion, "ระยะการคิลออร่า", "ใส่ค่าที่ต้องการเลยครับ", Kill_Aura_Dis)
 local function SetSlider5(Bar, Slide, Defalse_Value, Color)
 	local slider_Kill_Aura = createSlider(Bar, Slide, function(value)
 		Kill_Aura_Dis = value;	Kill_Aura_TextBox.Text = ""
