@@ -1314,12 +1314,24 @@ task.spawn(function()
 						NewHi.OutlineTransparency = 1
 						NewHi.FillColor = Color3.new(0.407843, 0.352941, 1)
 						NewText.BackgroundTransparency = 1
-						NewText.TextScaled = true
+						--NewText.TextScaled = true
 						NewText.TextColor3 = Color3.new(0.415686, 0.184314, 1)
-						NewText.Text = item2.Name
-						NewBil.Size = UDim2.new({0, 200},{0, 50})
+						NewText.Text = "Chest"
+						NewBil.Size = UDim2.new(0, 200,0, 50)
 						NewBil.SizeOffset = Vector2.new(0, 0.5)
-						NewText.Size = UDim2.new({0, 200},{0, 50})
+						NewBil.AlwaysOnTop = true
+						NewText.Size = UDim2.new(0, 200,0, 50)
+						pcall(function()
+							repeat
+								wait(0.01)
+							until item2.PrimaryPart.ProximityAttachment.ProximityInteraction
+							local Prox = item2.PrimaryPart.ProximityAttachment.ProximityInteraction
+							Prox.Triggered:Connect(function()
+								if item2:FindFirstChild("SOmtankChestBil") and item2:FindFirstChild("SOmtankChestBil"):FindFirstChild("TextLabel") then
+									item2:FindFirstChild("SOmtankChestBil"):FindFirstChild("TextLabel").Text = "Chest - Opened"
+								end
+							end)
+						end)
 					end
 				end
 				wait()
@@ -1502,6 +1514,7 @@ task.spawn(function()
 						until item2.PrimaryPart.ProximityAttachment.ProximityInteraction
 						local Prox = item2.PrimaryPart.ProximityAttachment.ProximityInteraction
 						Prox.HoldDuration = 0
+						Prox.MaxActivationDistance = 50
 					end)
 				end
 			end
