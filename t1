@@ -368,7 +368,7 @@ ModeFarm, ModeFarm_SelectFuntion = Create_ModeButton(" ฟาร์ม 🌾 ")
 ModeTeleport, ModeTeleport_SelectFuntion = Create_ModeButton(" เทเลพอร์ท 🌀 ")
 
 ModeDrag, ModeDrag_SelectFuntion = Create_ModeButton(" ดึงของ / ย้าย 📦 ")
-ModeDrag_SelectFuntion.CanvasSize = UDim2.new({0, 0},{20, 0})
+ModeDrag_SelectFuntion.CanvasSize = UDim2.new({0, 0},{0, 20})
 
 ModeAuto, ModeAuto_SelectFuntion = Create_ModeButton(" อัตโนมัติ ⚡ ")
 
