@@ -5,6 +5,39 @@ if not game:IsLoaded() then repeat task.wait() until game:IsLoaded() end
 if getgenv().RunScript == true then	return end
 getgenv().RunScript = true
 
+repeat
+	wait(0.1)
+	print("wait game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character")
+until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
+
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoid = character:FindFirstChildOfClass("Humanoid")
+local HMNRT = character:FindFirstChild("HumanoidRootPart")
+local Camera = workspace.CurrentCamera
+local plrGui = player.PlayerGui
+
+task.spawn(function()
+	local OutTick = 0
+	local LastPosition = HMNRT.Position
+	local Stuck_Count = 0
+	while wait(1) do
+		OutTick = OutTick + 1
+		print("OutTick "..OutTick)
+		local Dis = (LastPosition - HMNRT.Position).Magnitude
+		if Dis < 5 then
+			Stuck_Count = Stuck_Count + 1
+			print("Stuck "..Stuck_Count)
+		end
+		if OutTick >= 20 or Stuck_Count > 2 then
+			player:Kick()
+			wait(1)
+			game:GetService("TeleportService"):Teleport(126509999114328)
+		end
+		LastPosition = HMNRT.Position
+	end
+end)
+
 local queueScript = string.format([[
 loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads/main/t1'))()
 ]])
@@ -23,7 +56,6 @@ local function matchesAllowedKeyword(value, allowedKeywords)
 end
 
 if tonumber(game.PlaceId) == tonumber(79546208627805) then
-	repeat wait(0.1) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 	
 	local TweenService = game:GetService("TweenService")
 	local RunService = game:GetService("RunService")
@@ -143,16 +175,8 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		wait(0.1)
 	until Teleport == true
 else
-	repeat wait(0.1) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 	
 	print("---------Game Funtion")
-	
-	local player = game.Players.LocalPlayer
-	local character = player.Character
-	local humanoid = character:FindFirstChildOfClass("Humanoid")
-	local HMNRT = character:FindFirstChild("HumanoidRootPart")
-	local Camera = workspace.CurrentCamera
-	local plrGui = player.PlayerGui
 	
 	local DiamondCount = plrGui:WaitForChild("Interface"):WaitForChild("DiamondCount"):FindFirstChild("Count")
 	local Map = workspace:WaitForChild("Map")
@@ -170,22 +194,11 @@ else
 	if workspace:FindFirstChild("Map"):FindFirstChild("Boundaries") then
 		workspace:FindFirstChild("Map"):FindFirstChild("Boundaries"):Destroy()
 	end
+	
+	game.Workspace.Gravity = 0
+	
 	task.spawn(function()
-		local OutTick = 0
-		local DiedName = player.DisplayName.." Body"
 		while wait(3) do
-			OutTick = OutTick + 3
-			print("OutTick "..OutTick)
-			if workspace.Characters:FindFirstChild(DiedName) then
-				player:Kick("Teleport New Server")
-				wait(1)
-				game:GetService("TeleportService"):Teleport(126509999114328)
-			end
-			if OutTick >= 20 then
-				player:Kick("Teleport New Server")
-				wait(1)
-				game:GetService("TeleportService"):Teleport(126509999114328)
-			end
 			game:GetService("StarterGui"):SetCore("SendNotification", {Title = "💎 เพชรที่มีตอนนี้",Text = "💎 "..tonumber(DiamondCount.Text),Duration = 3})
 		end
 	end)
