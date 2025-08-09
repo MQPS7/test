@@ -5,12 +5,15 @@ if not game:IsLoaded() then repeat task.wait() until game:IsLoaded() end
 if getgenv().RunScript == true then	return end
 getgenv().RunScript = true
 
+local queueScript = string.format([[
+loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads/main/t2'))()
+]])
+
+queue_on_teleport(queueScript)
+
 repeat wait(0.1) until game.Players
-
 local TimeWaitLoadGame = 0
-
 local player = game.Players.LocalPlayer
-
 repeat
 	wait(0.1)
 	TimeWaitLoadGame = TimeWaitLoadGame + 0.1
@@ -41,7 +44,7 @@ task.spawn(function()
 				Stuck_Count = Stuck_Count + 1
 				print("Stuck "..Stuck_Count)
 			end
-			if OutTick >= 20 or Stuck_Count > 2 then
+			if OutTick >= 35 or Stuck_Count > 2 then
 				player:Kick()
 				wait(1)
 				game:GetService("TeleportService"):Teleport(126509999114328)
@@ -51,12 +54,6 @@ task.spawn(function()
 	end)
 end)
 
-local queueScript = string.format([[
-loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads/main/t2'))()
-]])
-
-queue_on_teleport(queueScript)
-print("---------Set queue_on_teleport")
 
 local function matchesAllowedKeyword(value, allowedKeywords)
 	value = value:lower()
@@ -94,7 +91,7 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		local Frame = TeleporterAssets:WaitForChild("Frame")
 		if Frame:FindFirstChild("TextLabel1") then
 			local TextLabel1 = Frame:FindFirstChild("TextLabel1")
-			TextLabel1.Text = "Somtank ฟาร์มเพชร"
+			TextLabel1.Text = "Somtank ฟาร์มเพชร 💎"
 			TextLabel1.Visible = true
 			TextLabel1.TextColor3 = Color3.new(0.454902, 0.0117647, 1)
 		end
@@ -188,9 +185,6 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		wait(0.1)
 	until Teleport == true
 else
-	
-	print("---------Game Funtion")
-	
 	local DiamondCount = plrGui:WaitForChild("Interface"):WaitForChild("DiamondCount"):FindFirstChild("Count")
 	local Map = workspace:WaitForChild("Map")
 	local InnerTouchZone = Map:WaitForChild("Campground"):WaitForChild("MainFire"):WaitForChild("InnerTouchZone")
@@ -202,7 +196,6 @@ else
 	local Bring_HipHeight = 6
 	local StartCountDiamon = tonumber(DiamondCount.Text)
 	local Items = workspace:WaitForChild("Items")
-	--local request = http_request or syn.request or request
 	
 	if workspace:FindFirstChild("Map"):FindFirstChild("Boundaries") then
 		workspace:FindFirstChild("Map"):FindFirstChild("Boundaries"):Destroy()
