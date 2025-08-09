@@ -143,7 +143,7 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		wait(0.1)
 	until Teleport == true
 else
-	wait(5)
+	repeat wait(0.1) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 	
 	print("---------Game Funtion")
 	
