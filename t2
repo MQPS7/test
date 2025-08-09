@@ -1,6 +1,8 @@
 local queueScript = string.format([[loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads/main/t2'))()]])
 queue_on_teleport(queueScript)
-repeat wait(0.1) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
+
+if getgenv().RunScript == true then	return end
+
 TweenService = game:GetService("TweenService");RunService = game:GetService("RunService")
 Lighting = game:GetService("Lighting")
 replicatedStorage = game:GetService("ReplicatedStorage")
@@ -25,6 +27,7 @@ local function matchesAllowedKeyword(value, allowedKeywords)
 end
 
 if tonumber(game.PlaceId) == tonumber(79546208627805) then
+	getgenv().RunScript = true
 	local TeleporterAssets = plrGui:WaitForChild("TeleporterAssets")
 	if plrGui:WaitForChild("Interface"):WaitForChild("EntryScreen") then
 		plrGui:WaitForChild("Interface"):WaitForChild("EntryScreen").Visible = false
@@ -125,6 +128,7 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		wait(0.1)
 	until Teleport == true
 else--InGame
+	getgenv().RunScript = true
 	DiamondCount = plrGui:WaitForChild("Interface"):WaitForChild("DiamondCount"):FindFirstChild("Count")
 	Map = workspace:WaitForChild("Map")
 	InnerTouchZone = Map:WaitForChild("Campground"):WaitForChild("MainFire"):WaitForChild("InnerTouchZone")
