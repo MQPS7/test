@@ -1,6 +1,6 @@
 local queueScript = string.format([[loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads/main/t2'))()]])
 queue_on_teleport(queueScript)
-
+repeat wait(0.1) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 TweenService = game:GetService("TweenService");RunService = game:GetService("RunService")
 Lighting = game:GetService("Lighting")
 replicatedStorage = game:GetService("ReplicatedStorage")
