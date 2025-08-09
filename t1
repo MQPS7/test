@@ -2,9 +2,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 if not game:IsLoaded() then repeat task.wait() until game:IsLoaded() end
 
-repeat wait(0.5) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
-
-
 if getgenv().RunScript == true then	return end
 getgenv().RunScript = true
 
@@ -14,21 +11,6 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads
 
 queue_on_teleport(queueScript)
 print("---------Set queue_on_teleport")
-
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local Lighting = game:GetService("Lighting")
-local replicatedStorage = game:GetService("ReplicatedStorage")
-local UIS = game:GetService("UserInputService")
-local player = game.Players.LocalPlayer
-local character = player.Character
-local humanoid = character:FindFirstChildOfClass("Humanoid")
-local HMNRT = character:FindFirstChild("HumanoidRootPart")
-local Camera = workspace.CurrentCamera
-local plrGui = player.PlayerGui
-local Inventory = player:WaitForChild("Inventory")
-local HttpService = game:GetService("HttpService")
-local request = http_request or syn.request or request
 
 local function matchesAllowedKeyword(value, allowedKeywords)
 	value = value:lower()
@@ -41,7 +23,24 @@ local function matchesAllowedKeyword(value, allowedKeywords)
 end
 
 if tonumber(game.PlaceId) == tonumber(79546208627805) then
+	repeat wait(0.1) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
+	
+	local TweenService = game:GetService("TweenService")
+	local RunService = game:GetService("RunService")
+	local Lighting = game:GetService("Lighting")
+	local replicatedStorage = game:GetService("ReplicatedStorage")
+	local UIS = game:GetService("UserInputService")
+	local player = game.Players.LocalPlayer
+	local character = player.Character
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	local HMNRT = character:FindFirstChild("HumanoidRootPart")
+	local Camera = workspace.CurrentCamera
+	local plrGui = player.PlayerGui
+	local Inventory = player:WaitForChild("Inventory")
+	local HttpService = game:GetService("HttpService")
+	local request = http_request or syn.request or request
 	local StageUI = nil
+	
 	local TeleporterAssets = plrGui:WaitForChild("TeleporterAssets")
 	if plrGui:WaitForChild("Interface"):WaitForChild("EntryScreen") then
 		plrGui:WaitForChild("Interface"):WaitForChild("EntryScreen").Visible = false
