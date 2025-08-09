@@ -17,7 +17,7 @@ local player = game.Players.LocalPlayer
 repeat
 	wait(0.1)
 	TimeWaitLoadGame = TimeWaitLoadGame + 0.1
-	if TimeWaitLoadGame > 10 then
+	if TimeWaitLoadGame > 5 then
 		player:Kick()
 		wait(1)
 		game:GetService("TeleportService"):Teleport(126509999114328)
