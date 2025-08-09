@@ -2,9 +2,6 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 if not game:IsLoaded() then repeat task.wait() until game:IsLoaded() end
 
-repeat wait(0.5) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
-
-
 if getgenv().RunScript == true then	return end
 getgenv().RunScript = true
 
@@ -63,9 +60,9 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		end
 		if Frame:FindFirstChild("TextLabel3") then
 			local TextLabel3 = Frame:FindFirstChild("TextLabel3")
-			TextLabel3.Text = "stage : รอห้องว่าง"
+			TextLabel3.Text = "สถานนะ : รอห้องว่าง"
 			TextLabel3.Visible = true
-			TextLabel3.TextColor3 = Color3.new(0.513725, 0.321569, 1)
+			TextLabel3.TextColor3 = Color3.new(0.658824, 0.592157, 1)
 			StageUI = TextLabel3
 		end
 	end
@@ -106,9 +103,6 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		end
 		if GotoEnterPart == true then
 			GotoEnterPart = false
-			if StageUI then
-				StageUI.Text = "stage : รอสร้างห้อง"
-			end
 			local LobbyCreate = plrGui:FindFirstChild("Interface"):FindFirstChild("LobbyCreate")
 			local ButtonList = LobbyCreate:FindFirstChild("ButtonList")
 			local CreateButton = LobbyCreate:FindFirstChild("HeaderFrame"):FindFirstChild("CreateButton")
@@ -122,9 +116,7 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 					end
 				end
 				if Buttin1 and CreateButton then
-					
 					CreateButton.Position = UDim2.new(0.5, 0, 4.5, 0)
-
 					if TeleporterAssets:WaitForChild("Frame") then
 						TeleporterAssets:WaitForChild("Frame").Visible = false
 					end
@@ -133,7 +125,7 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 					end
 					Buttin1.Visible = false
 					if StageUI then
-						StageUI.Text = "stage : สร้างห้องสำเร็จ"
+						StageUI.Text = "สถานนะ : สร้างห้องสำเร็จ"
 					end
 					for i=1,5 do
 						Click_Function()
@@ -171,9 +163,14 @@ else
 		local OutTick = 0
 		local DiedName = player.DisplayName.." Body"
 		while wait(3) do
-			OutTick = 3
+			OutTick = OutTick + 3
 			print("OutTick "..OutTick)
 			if workspace.Characters:FindFirstChild(DiedName) then
+				player:Kick("Teleport New Server")
+				wait(1)
+				game:GetService("TeleportService"):Teleport(126509999114328)
+			end
+			if OutTick >= 20 then
 				player:Kick("Teleport New Server")
 				wait(1)
 				game:GetService("TeleportService"):Teleport(126509999114328)
