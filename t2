@@ -17,9 +17,9 @@ local player = game.Players.LocalPlayer
 repeat
 	wait(0.1)
 	TimeWaitLoadGame = TimeWaitLoadGame + 0.1
-	if TimeWaitLoadGame > 5 then
+	if TimeWaitLoadGame > 3 then
 		player:Kick()
-		wait(1)
+		wait(0.5)
 		game:GetService("TeleportService"):Teleport(126509999114328)
 	end
 until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
@@ -46,7 +46,7 @@ task.spawn(function()
 			end
 			if OutTick >= 35 or Stuck_Count > 2 then
 				player:Kick()
-				wait(1)
+				wait(0.5)
 				game:GetService("TeleportService"):Teleport(126509999114328)
 			end
 			LastPosition = HMNRT.Position
@@ -233,12 +233,11 @@ else
 			humanoid.HipHeight = 0
 		end)
 	end
-	print("---------Chest OpenAll")
 	for _, item2 in ipairs(Items:GetChildren()) do
 		if matchesAllowedKeyword(item2.Name, {"Chest"}) then
 			pcall(function()
 				repeat
-					wait(0.3)
+					wait(0.1)
 				until item2.PrimaryPart.ProximityAttachment.ProximityInteraction
 				local Prox = item2.PrimaryPart.ProximityAttachment.ProximityInteraction
 				humanoid.HipHeight = 16
@@ -250,7 +249,6 @@ else
 			end)
 		end
 	end
-	print("---------Get Diamon")
 	for _, Model in ipairs(Items:GetChildren()) do
 		if Model.Name == "Diamond" then
 			pcall(function()
@@ -264,12 +262,10 @@ else
 					wait(0.1)
 					StopDraggingItem:FireServer(Model)
 				end
-				wait()
 			end)
 		end
 	end
-	print("---------Kick")
-	wait(3)
+	wait(2)
 	player:Kick()
 	wait(0.5)
 	game:GetService("TeleportService"):Teleport(126509999114328)
