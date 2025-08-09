@@ -1,6 +1,12 @@
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+if not game:IsLoaded() then repeat task.wait() until game:IsLoaded() end
+
 repeat wait(0.5) until game.Players and game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 
+
 if getgenv().RunScript == true then	return end
+getgenv().RunScript = true
 
 local queueScript = string.format([[
 loadstring(game:HttpGet('https://raw.githubusercontent.com/MQPS7/test/refs/heads/main/t2'))()
@@ -35,7 +41,7 @@ local function matchesAllowedKeyword(value, allowedKeywords)
 end
 
 if tonumber(game.PlaceId) == tonumber(79546208627805) then
-	getgenv().RunScript = true
+	local StageUI = nil
 	local TeleporterAssets = plrGui:WaitForChild("TeleporterAssets")
 	if plrGui:WaitForChild("Interface"):WaitForChild("EntryScreen") then
 		plrGui:WaitForChild("Interface"):WaitForChild("EntryScreen").Visible = false
@@ -45,21 +51,22 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		local Frame = TeleporterAssets:WaitForChild("Frame")
 		if Frame:FindFirstChild("TextLabel1") then
 			local TextLabel1 = Frame:FindFirstChild("TextLabel1")
-			TextLabel1.Text = "Somtank"
+			TextLabel1.Text = "Somtank ฟาร์มเพชร"
 			TextLabel1.Visible = true
 			TextLabel1.TextColor3 = Color3.new(0.454902, 0.0117647, 1)
 		end
 		if Frame:FindFirstChild("TextLabel2") then
 			local TextLabel2 = Frame:FindFirstChild("TextLabel2")
-			TextLabel2.Text = "Gems"
+			TextLabel2.Text = "ขอบคุณที่ใช้สคริปครับ"
 			TextLabel2.Visible = true
 			TextLabel2.TextColor3 = Color3.new(0.513725, 0.321569, 1)
 		end
 		if Frame:FindFirstChild("TextLabel3") then
 			local TextLabel3 = Frame:FindFirstChild("TextLabel3")
-			TextLabel3.Text = "Farm"
+			TextLabel3.Text = "stage : รอห้องว่าง"
 			TextLabel3.Visible = true
 			TextLabel3.TextColor3 = Color3.new(0.513725, 0.321569, 1)
+			StageUI = TextLabel3
 		end
 	end
 	local VirtualInputManager = game:GetService("VirtualInputManager")
@@ -99,6 +106,9 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		end
 		if GotoEnterPart == true then
 			GotoEnterPart = false
+			if StageUI then
+				StageUI.Text = "stage : รอสร้างห้อง"
+			end
 			local LobbyCreate = plrGui:FindFirstChild("Interface"):FindFirstChild("LobbyCreate")
 			local ButtonList = LobbyCreate:FindFirstChild("ButtonList")
 			local CreateButton = LobbyCreate:FindFirstChild("HeaderFrame"):FindFirstChild("CreateButton")
@@ -112,6 +122,7 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 					end
 				end
 				if Buttin1 and CreateButton then
+					
 					CreateButton.Position = UDim2.new(0.5, 0, 4.5, 0)
 
 					if TeleporterAssets:WaitForChild("Frame") then
@@ -121,6 +132,9 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 						Click_Function()
 					end
 					Buttin1.Visible = false
+					if StageUI then
+						StageUI.Text = "stage : สร้างห้องสำเร็จ"
+					end
 					for i=1,5 do
 						Click_Function()
 					end
@@ -136,12 +150,8 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		wait(0.1)
 	until Teleport == true
 else
-	getgenv().RunScript = true
+	
 	print("---------Game Funtion")
-	
-	repeat wait(0.5) until workspace.Items and plrGui.Interface.DiamondCount and workspace.Map
-	
-	wait(1)
 	
 	local DiamondCount = plrGui:WaitForChild("Interface"):WaitForChild("DiamondCount"):FindFirstChild("Count")
 	local Map = workspace:WaitForChild("Map")
@@ -158,8 +168,12 @@ else
 		workspace:FindFirstChild("Map"):FindFirstChild("Boundaries"):Destroy()
 	end
 	task.spawn(function()
+		local OutTick = 0
+		local DiedName = player.DisplayName.." Body"
 		while wait(3) do
-			if humanoid.Health <= 20 or character.Parent ~= workspace then
+			OutTick = 3
+			print("OutTick "..OutTick)
+			if workspace.Characters:FindFirstChild(DiedName) then
 				player:Kick("Teleport New Server")
 				wait(1)
 				game:GetService("TeleportService"):Teleport(126509999114328)
@@ -227,7 +241,8 @@ else
 		end
 	end
 	print("---------Kick")
+	wait(3)
 	player:Kick()
-	wait(1)
+	wait(0.5)
 	game:GetService("TeleportService"):Teleport(126509999114328)
 end
