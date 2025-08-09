@@ -38,7 +38,6 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 	local plrGui = player.PlayerGui
 	local Inventory = player:WaitForChild("Inventory")
 	local HttpService = game:GetService("HttpService")
-	local request = http_request or syn.request or request
 	local StageUI = nil
 	
 	local TeleporterAssets = plrGui:WaitForChild("TeleporterAssets")
@@ -144,8 +143,16 @@ if tonumber(game.PlaceId) == tonumber(79546208627805) then
 		wait(0.1)
 	until Teleport == true
 else
+	wait(5)
 	
 	print("---------Game Funtion")
+	
+	local player = game.Players.LocalPlayer
+	local character = player.Character
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	local HMNRT = character:FindFirstChild("HumanoidRootPart")
+	local Camera = workspace.CurrentCamera
+	local plrGui = player.PlayerGui
 	
 	local DiamondCount = plrGui:WaitForChild("Interface"):WaitForChild("DiamondCount"):FindFirstChild("Count")
 	local Map = workspace:WaitForChild("Map")
@@ -158,6 +165,8 @@ else
 	local Bring_HipHeight = 6
 	local StartCountDiamon = tonumber(DiamondCount.Text)
 	local Items = workspace:WaitForChild("Items")
+	--local request = http_request or syn.request or request
+	
 	if workspace:FindFirstChild("Map"):FindFirstChild("Boundaries") then
 		workspace:FindFirstChild("Map"):FindFirstChild("Boundaries"):Destroy()
 	end
