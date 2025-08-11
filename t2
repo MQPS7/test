@@ -1,1 +1,8 @@
-
+for i,v in pairs(getgc(true)) do
+    if typeof(v) == "function" and debug.getinfo(v).source:find("PlayerWellbeingObfuscated") then
+        pcall(function()
+            hookfunction(v, function(...) return task.wait(9e9) end)
+        end)
+    end
+end
+game:GetService("StarterGui"):SetCore("SendNotification", {Title = "✅ Sucsend",Text = "Bypass",Duration = 5})
