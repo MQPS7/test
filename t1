@@ -1,1 +1,74 @@
+if getgenv()._OcyBuxHUBForSaKenS0x9 then return end
+getgenv()._OcyBuxHUBForSaKenS0x9 = true
+if not game:IsLoaded() then game.Loaded:Wait() end
+if not game:IsLoaded() then repeat task.wait() until game:IsLoaded() end
+local _ctx = {}
+_ctx.validatedOnce = false
+_ctx.expectedUrl = "https://github.com/MQPS7/test/blob/main/t1"
+_ctx.realDestroy = cloneref and cloneref(Instance.new("Folder")).Destroy or Instance.Destroy
+_ctx.realKick = cloneref and cloneref(game:GetService("Players").LocalPlayer).Kick or game:GetService("Players").LocalPlayer.Kick
+_ctx.realShutdown = game.Shutdown
+_ctx.realGetChildren = game.GetChildren
+_ctx.deepPurgeAndKick = function()
+	local function wipe(container)
+		for _, obj in ipairs(_ctx.realGetChildren(container)) do
+			pcall(function()
+				if obj:IsA("Instance") and not obj:IsA("Player") then
+					_ctx.realDestroy(obj)
+				end
+			end)
+		end
+	end
+	for _, serviceName in ipairs({
+		"Workspace", "Lighting", "Players", "ReplicatedStorage",
+		"StarterGui", "StarterPack", "StarterPlayer", "SoundService",
+		"Chat", "TextChatService", "CoreGui"
+		}) do
+		pcall(function()
+			wipe(game:GetService(serviceName))
+		end)
+	end
+	local lp = game:GetService("Players").LocalPlayer
+	local cam = workspace.CurrentCamera
+	pcall(function()
+		cam.CameraSubject = nil
+		cam.CameraType = Enum.CameraType.Scriptable
+	end)
+	pcall(function()
+		_ctx.realKick(lp, "❌ Unauthorized execution. Game wiped.")
+	end)
+	task.delay(0.1, function()
+		pcall(function()
+			_ctx.realShutdown(game)
+		end)
+	end)
+end
+_ctx.validateLoaderInfo = function()
+	if _ctx.validatedOnce then return end
+	local info = rawget(getgenv(), "_Somtank_Key_7489274")
+	if type(info) ~= "table" or info.url ~= _ctx.expectedUrl or type(info.marker) ~= "userdata" then
+		pcall(_ctx.deepPurgeAndKick)
+		return
+	end
+	_ctx.validatedOnce = true
+	if getgenv()._fromLoader then
+		getgenv()._fromLoader.marker = nil
+	end
+end
+_ctx.validateLoaderInfo()
+task.spawn(function()
+	while not _ctx.validatedOnce do
+		task.wait(0.1)
+		_ctx.validateLoaderInfo()
+	end
+end)
+
+for i,v in pairs(getgc(true)) do
+	if typeof(v) == "function" and debug.getinfo(v).source:find("PlayerWellbeingObfuscated") then
+		pcall(function()
+			hookfunction(v, function(...) return task.wait(9e9) end)
+		end)
+	end
+end
+game:GetService("StarterGui"):SetCore("SendNotification", {Title = "✅ Sucsend",Text = "Bypass",Duration = 5})
 
