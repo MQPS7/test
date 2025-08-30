@@ -1,0 +1,175 @@
+if getgenv().Setting then
+	for k, v in pairs(getgenv().Setting) do
+		print("************* "..k, v)
+	end
+else
+	getgenv().Setting = {
+		Map = "School",
+		Difficulty = "Normal",
+		Mode = "None",
+		Language = "Thai",
+		Farm_Mode = "",
+		WebHook = ""
+	}
+end
+AutoCreateRoom = true
+Choose_Difficulty_Farm = getgenv().Setting.Difficulty
+Choose_Mode_Farm = getgenv().Setting.Mode
+Choose_Map_Farm = getgenv().Setting.Map
+HttpService = game:GetService("HttpService")
+player = game.Players.LocalPlayer
+character = player.Character
+humanoid = character:FindFirstChildOfClass("Humanoid")
+HMNRT = character:WaitForChild("HumanoidRootPart")
+Camera = workspace.CurrentCamera
+screenSize = Camera.ViewportSize
+plrGui = player.PlayerGui
+task.spawn(function()
+	if tonumber(game.PlaceId) ~= tonumber(103754275310547) then return end
+	for i=1, 10 do
+		wait(1)
+		print("Cool_Down_Auto_Create "..10 .." / "..i)
+	end
+	local Match, Created, TimeReTry, SpawnCFrame = workspace:WaitForChild("Match"), false, 0, HMNRT.CFrame
+	local StartPlaceRedo = plrGui:WaitForChild("GUI"):WaitForChild("StartPlaceRedo")
+	local iContent = plrGui:WaitForChild("GUI"):WaitForChild("StartPlaceRedo"):WaitForChild("Content"):WaitForChild("iContent")
+	local Start_Button = iContent:WaitForChild("Button")
+	local F_pls = iContent:WaitForChild("options"):WaitForChild("playerselect"):WaitForChild("F")
+	local De_PlayerSize, Plus_PlayerSize = F_pls:WaitForChild("l"), F_pls:WaitForChild("r")
+	local PlayerSize_TextLabel = F_pls:WaitForChild("Shape"):WaitForChild("Fill"):WaitForChild("TextLabel")
+	local function OtherPlayerNear(TargetPosition, NearValue)
+		local Players, Resut = game:GetService("Players"), true
+		for i,v in ipairs(Players:GetChildren()) do
+			if v ~= player and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+				local Dis = (v.Character:FindFirstChild("HumanoidRootPart").Position - TargetPosition).Magnitude
+				if Dis < NearValue then
+					Resut = false
+				end
+			end
+		end
+		return Resut
+	end
+	local maps_select, modes_select, upmodes_select = iContent:WaitForChild("maps"), iContent:WaitForChild("modes"), iContent:WaitForChild("upmodes")
+	local function Click_Mode(Grup, TargetButton)
+		if Grup and TargetButton and TargetButton ~= "None" then
+			for i,v in ipairs(Grup:GetChildren()) do
+				if v:IsA("TextButton") and v:FindFirstChild("TextLabel") then
+					if v:FindFirstChild("TextLabel").Text == TargetButton then
+						firesignal(v.MouseButton1Click)
+					end
+				end
+			end
+		end
+	end
+	local TeleportService = game:GetService("TeleportService")
+	local PlaceId = game.PlaceId
+	local function getServerList()
+		local success, result = pcall(function()
+			return HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+		end)
+		if success and result and result.data then
+			return result.data
+		else
+			warn("ไม่สามารถดึงข้อมูล server ได้")
+			return nil
+		end
+	end
+	local function findBestServer(maxPlayers)
+		maxPlayers = maxPlayers or 5
+		local servers = getServerList()
+		if not servers then
+			return nil
+		end
+		table.sort(servers, function(a, b)
+			return a.playing < b.playing
+		end)
+		for _, server in ipairs(servers) do
+			local currentServerJobId = game.JobId
+			if server.id ~= currentServerJobId and 
+				server.playing <= maxPlayers and 
+				server.playing > 0 then
+				return server
+			end
+		end
+		return nil
+	end
+	local function hopToServer(targetServer)
+		if not targetServer then
+			warn("ไม่พบ server ที่เหมาะสม")
+			return false
+		end
+		local success, errorMessage = pcall(function()
+			TeleportService:TeleportToPlaceInstance(PlaceId, targetServer.id, player)
+		end)
+		if not success then
+			warn("ไม่สามารถ teleport ได้: " .. tostring(errorMessage))
+			return false
+		end
+		return true
+	end
+	local function serverHop(maxPlayers)
+		maxPlayers = maxPlayers or 5
+		local targetServer = findBestServer(maxPlayers)
+		if targetServer then
+			return hopToServer(targetServer)
+		else
+			wait(2)
+			targetServer = findBestServer(maxPlayers + 3)
+			if targetServer then
+				return hopToServer(targetServer)
+			else
+				warn("ไม่พบ server ที่เหมาะสมเลย")
+				return false
+			end
+		end
+	end
+	_G.ServerHopper = {hop = serverHop,findBest = findBestServer,getServers = getServerList}
+	while true do
+		if AutoCreateRoom then
+			print("AutoCreateRoom is Reapeat")
+			repeat
+				if TimeReTry >= 5 then
+					serverHop(15)
+				end
+				if StartPlaceRedo.Visible == false and Created == false then
+					for i,PartTouch in ipairs(Match:GetChildren()) do
+						if PartTouch:IsA("BasePart") and OtherPlayerNear(PartTouch.Position, 7) then
+							if Created == false then
+								pcall(function()
+									HMNRT.CFrame = CFrame.new(PartTouch.Position)
+									wait(1.5)
+									if StartPlaceRedo and StartPlaceRedo.Visible == true then
+										Created = true
+									end
+								end)
+							end
+						end
+					end
+					HMNRT.CFrame = SpawnCFrame * CFrame.new(0,5,0)
+					TimeReTry = TimeReTry + 1
+					task.wait(5)
+				end
+				if StartPlaceRedo and StartPlaceRedo.Visible == true then
+					for i=1,10 do
+						firesignal(De_PlayerSize.MouseButton1Click)
+						wait(0.05)
+					end
+					print("*** Map "..Choose_Map_Farm.." Difficulty "..Choose_Difficulty_Farm.." Mode "..Choose_Mode_Farm)
+					wait(0.7)
+					if Choose_Mode_Farm ~= "None" then
+						Click_Mode(upmodes_select, Choose_Mode_Farm)
+					end
+					wait(0.7)
+					Click_Mode(maps_select, Choose_Map_Farm)
+					wait(0.7)
+					Click_Mode(modes_select, Choose_Difficulty_Farm)
+					wait(1)
+					firesignal(Start_Button.MouseButton1Click)
+					Created = true
+				end
+				wait(1)
+			until AutoCreateRoom == false
+		end
+		wait(1)
+	end
+end)
